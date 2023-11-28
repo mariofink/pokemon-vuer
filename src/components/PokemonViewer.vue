@@ -2,8 +2,8 @@
 <template>
   <div class="flex flex-col items-center mt-8">
     <h1 class="text-2xl font-bold">Random Pokémon Viewer</h1>
-    <div class="mt-4 mb-8 h-[120px]">
-      <div v-if="loading">Loading...</div>
+    <div class="mt-4 mb-8 h-[120px] flex items-center">
+      <div v-if="loading"><LoaderIndicator /></div>
       <div v-else>
         <img :src="pokemonSprite" :alt="pokemon.name" />
         <h2 class="text-center">{{ pokemon.name }}</h2>
@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import LoaderIndicator from './LoaderIndicator.vue';
 
 interface Pokemon {
   name: string;
@@ -31,9 +32,10 @@ interface Pokemon {
 
 export default defineComponent({
   name: 'PokemonViewer',
+  components: { LoaderIndicator },
   data() {
     return {
-      loading: false,
+      loading: true,
       pokemon: {} as Pokemon
     };
   },
