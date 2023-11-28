@@ -12,8 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
-import axios from 'axios';
+import { defineComponent } from 'vue';
 
 interface Pokemon {
   name: string;
@@ -39,10 +38,10 @@ export default defineComponent({
     async fetchRandomPokemon() {
       this.loading = true;
       try {
-        const response = await axios.get(
-          'https://pokeapi.co/api/v2/pokemon/' + Math.floor(Math.random() * 150) + 1
-        );
-        this.pokemon = response.data;
+        const randomPokemonId = Math.floor(Math.random() * 150) + 1;
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`);
+        const data = await response.json();
+        this.pokemon = data;
       } catch (error) {
         console.error('Error fetching Pokémon:', error);
       } finally {
