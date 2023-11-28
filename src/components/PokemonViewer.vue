@@ -1,13 +1,12 @@
-<!-- PokemonViewer.vue -->
 <template>
   <div class="flex flex-col items-center mt-8">
     <h1 class="text-2xl font-bold">Random Pokémon Viewer</h1>
     <div class="mt-4 mb-8 h-[120px] flex items-center">
       <div v-if="loading"><LoaderIndicator /></div>
-      <div v-else>
+      <figure v-else>
         <img :src="pokemonSprite" :alt="pokemon.name" />
-        <h2 class="text-center">{{ pokemon.name }}</h2>
-      </div>
+        <figcaption class="text-center">{{ pokemon.name }}</figcaption>
+      </figure>
     </div>
     <button
       type="button"
