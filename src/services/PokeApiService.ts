@@ -1,3 +1,5 @@
+import PokeApiSchema from '@/schemas/PokeApiSchema';
+
 interface Pokemon {
   name: string;
   sprites: {
@@ -17,7 +19,11 @@ export class PokeApiService {
     if (!response.ok) {
       throw new Error(`Failed to fetch Pokémon with ID ${id}`);
     }
-    return response.json();
+    const { value, error } = PokeApiSchema.validate(await response.json());
+    if (error) {
+      console.error(error);
+    }
+    return value;
   }
 
   async getRandomPokemon(): Promise<Pokemon> {
