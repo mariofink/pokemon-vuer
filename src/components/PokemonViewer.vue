@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { PokeApiService } from '@/services/PokeApiService';
 import LoaderIndicator from './LoaderIndicator.vue';
 
 interface Pokemon {
@@ -28,6 +29,8 @@ interface Pokemon {
     front_default: string;
   };
 }
+
+const pokeApiService = new PokeApiService();
 
 export default defineComponent({
   name: 'PokemonViewer',
@@ -46,16 +49,8 @@ export default defineComponent({
   methods: {
     async fetchRandomPokemon() {
       this.loading = true;
-      try {
-        const randomPokemonId = Math.floor(Math.random() * 150) + 1;
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`);
-        const data = await response.json();
-        this.pokemon = data;
-      } catch (error) {
-        console.error('Error fetching Pokémon:', error);
-      } finally {
-        this.loading = false;
-      }
+      this.pokemon = await pokeApiService.getRandomPokemon();
+      this.loading = false;
     }
   },
   mounted() {
