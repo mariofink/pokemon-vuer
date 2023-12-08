@@ -49,7 +49,12 @@ export default defineComponent({
   methods: {
     async fetchRandomPokemon() {
       this.loading = true;
-      this.pokemon = await pokeApiService.getRandomPokemon();
+      try {
+        this.pokemon = await pokeApiService.getRandomPokemon();
+      } catch (error) {
+        this.pokemon = {} as Pokemon;
+        console.error(error);
+      }
       this.loading = false;
     }
   },

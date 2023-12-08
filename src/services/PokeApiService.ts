@@ -21,7 +21,7 @@ export class PokeApiService {
     }
     const { value, error } = PokeApiSchema.validate(await response.json());
     if (error) {
-      console.error(error);
+      throw new Error(error.toString());
     }
     return value;
   }
