@@ -1,42 +1,44 @@
-import Joi from 'joi';
+import { array, boolean, number, object, string } from 'yup';
 
-const schema = Joi.object({
-  abilities: Joi.array(),
-  base_experience: Joi.number().integer().positive(),
-  forms: Joi.array(),
-  game_indices: Joi.array(),
-  height: Joi.number().integer().positive(),
-  held_items: Joi.array(),
-  id: Joi.number().integer().positive(),
-  is_default: Joi.boolean(),
-  location_area_encounters: [Joi.array(), Joi.string()], // Array || String
-  moves: Joi.array(),
-  name: Joi.string(),
-  order: Joi.number().integer().positive(),
-  past_abilities: Joi.array(),
-  past_types: Joi.array(),
-  species: Joi.object({
-    url: Joi.string().uri(),
-    name: Joi.string()
+const schema = object().shape({
+  abilities: array(),
+  base_experience: number().positive().integer(),
+  forms: array(),
+  game_indices: array(),
+  height: number().positive().integer(),
+  held_items: array(),
+  id: number().positive().integer(),
+  is_default: boolean(),
+  location_area_encounters: string(),
+  moves: array(),
+  name: string(),
+  order: number().positive().integer(),
+  past_abilities: array(),
+  past_types: array(),
+  species: object().shape({
+    url: string().url(),
+    name: string()
   }),
-  sprites: Joi.object().keys({
-    back_default: Joi.string().uri(),
-    back_female: Joi.string().uri().optional().allow(null),
-    back_shiny_female: Joi.string().uri().optional().allow(null),
-    back_shiny: Joi.string().uri(),
-    front_default: Joi.string().uri(),
-    front_female: Joi.string().uri().optional().allow(null),
-    front_shiny_female: Joi.string().optional().allow(null),
-    front_shiny: Joi.string().uri(),
-    other: Joi.object(),
-    versions: Joi.object()
+  sprites: object().shape({
+    back_default: string().url(),
+    back_female: string().url().nullable().notRequired(),
+    back_shiny_female: string().url().nullable().notRequired(),
+    back_shiny: string().url(),
+    front_default: string().url(),
+    front_female: string().url().nullable().notRequired(),
+    front_shiny_female: string().url().nullable().notRequired(),
+    front_shiny: string().url(),
+    other: object(),
+    versions: object()
   }),
-  stats: Joi.array(),
-  types: Joi.array().items({
-    slot: Joi.number().positive(),
-    type: Joi.object()
-  }),
-  weight: Joi.number().integer().positive()
+  stats: array(),
+  types: array().of(
+    object().shape({
+      slot: number().positive(),
+      type: object()
+    })
+  ),
+  weight: number().positive().integer()
 });
 
 export default schema;

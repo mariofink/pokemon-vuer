@@ -1,14 +1,10 @@
+import { type InferType } from 'yup';
 import PokeApiSchema from '@/schemas/PokeApiSchema';
 
-interface Pokemon {
-  name: string;
-  sprites: {
-    front_default: string;
-  };
-}
+export interface Pokemon extends InferType<typeof PokeApiSchema> {}
 
 export class PokeApiService {
-  private apiUrl: string;
+  private readonly apiUrl: string;
 
   constructor(apiUrl: string = 'https://pokeapi.co/api/v2') {
     this.apiUrl = apiUrl;
@@ -19,11 +15,7 @@ export class PokeApiService {
     if (!response.ok) {
       throw new Error(`Failed to fetch Pokémon with ID ${id}`);
     }
-    const { value, error } = PokeApiSchema.validate(await response.json());
-    if (error) {
-      throw new Error(error.toString());
-    }
-    return value;
+    return PokeApiSchema.validate(await response.json());
   }
 
   async getRandomPokemon(): Promise<Pokemon> {

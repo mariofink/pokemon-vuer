@@ -20,15 +20,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { PokeApiService } from '@/services/PokeApiService';
+import { PokeApiService, type Pokemon } from '@/services/PokeApiService';
 import LoaderIndicator from './LoaderIndicator.vue';
-
-interface Pokemon {
-  name: string;
-  sprites: {
-    front_default: string;
-  };
-}
 
 const pokeApiService = new PokeApiService();
 
