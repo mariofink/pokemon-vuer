@@ -14,7 +14,6 @@
       @click="
         () => {
           pokemonID = getRandomPokemonID();
-          refetch();
         }
       "
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -34,8 +33,11 @@ const pokeApiService = new PokeApiService();
 
 const getRandomPokemonID = () => Math.floor(Math.random() * 150) + 1;
 const pokemonID = ref(getRandomPokemonID());
-const { isPending, isError, isFetching, data, error, refetch } = useQuery({
-  queryKey: ['pokemon', pokemonID.value],
+import { computed } from 'vue';
+
+const queryKey = computed(() => ['pokemon', pokemonID.value]);
+const { isPending, isError, data, error } = useQuery({
+  queryKey,
   queryFn: (): Promise<Pokemon> => pokeApiService.getPokemonById(pokemonID.value)
 });
 </script>
