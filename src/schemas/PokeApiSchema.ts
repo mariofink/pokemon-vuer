@@ -11,7 +11,7 @@ const schema = object().shape({
   is_default: boolean(),
   location_area_encounters: string(),
   moves: array(),
-  name: string(),
+  name: string().required(),
   order: number().positive().integer(),
   past_abilities: array(),
   past_types: array(),
@@ -30,7 +30,7 @@ const schema = object().shape({
     front_shiny: string().url(),
     other: object(),
     versions: object()
-  }),
+  }).required(),
   stats: array(),
   types: array().of(
     object().shape({

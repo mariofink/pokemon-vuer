@@ -16,17 +16,25 @@ describe('PokemonViewer', () => {
     expect(wrapper.find('.loader-indicator').exists()).toBe(false);
   });
 
-  test('renders Pokemon information after loading', async () => {
-    // TODO: Very hard to test with the current implementation.
+test('renders Pokemon information after loading', async () => {
     const wrapper = mount(PokemonViewer);
-
-    // Wait for the fetchRandomPokemon method to complete
+    // Simulate the component's state after fetching a Pokemon
+    wrapper.setData({
+      loading: false,
+      pokemon: {
+        id: 1,
+        name: 'bulbasaur',
+        sprites: {
+          front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+        },
+      },
+    });
     await wrapper.vm.$nextTick();
-
-    // Ensure the Pokemon image is rendered when not loading
+    // Ensure the Pokemon image and name are rendered when not loading
     expect(wrapper.find('img').exists()).toBe(true);
-    // Ensure the Pokemon name is rendered when not loading
+    expect(wrapper.find('img').attributes('src')).toBe('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png');
     expect(wrapper.find('figcaption').exists()).toBe(true);
+    expect(wrapper.find('figcaption').text()).toBe('bulbasaur');
   });
 
   test('fetches random Pokemon when the button is clicked', async () => {
