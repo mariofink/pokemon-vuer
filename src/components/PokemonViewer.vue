@@ -4,9 +4,9 @@
     <div class="mt-4 mb-8 h-[120px] flex items-center">
       <div v-if="isPending"><LoaderIndicator /></div>
       <div v-else-if="isError">An error has occurred: {{ error }}</div>
-      <figure v-else-if="Pokemon">
-        <img :src="Pokemon.sprites?.front_default" :alt="Pokemon.name" />
-        <figcaption class="text-center">{{ Pokemon.name }}</figcaption>
+      <figure v-else-if="data">
+        <img :src="data.sprites?.front_default" :alt="data.name" />
+        <figcaption class="text-center">{{ data.name }}</figcaption>
       </figure>
     </div>
     <button
@@ -24,42 +24,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import { PokeApiService, type Pokemon } from '@/services/PokeApiService';
 import { useQuery } from '@tanstack/vue-query';
 import LoaderIndicator from './LoaderIndicator.vue';
 
 const pokeApiService = new PokeApiService();
 
-export default defineComponent({
-  name: 'PokemonViewer',
-  components: { LoaderIndicator },
-  setup() {
-    const getRandomPokemonID = () => Math.floor(Math.random() * 150) + 1;
-    const pokemonID = ref(getRandomPokemonID());
-    const {
-      isPending,
-      isError,
-      isFetching,
-      data: Pokemon,
-      error,
-      refetch
-    } = useQuery({
-      queryKey: ['pokemon', pokemonID.value],
-      queryFn: (): Promise<Pokemon> => pokeApiService.getPokemonById(pokemonID.value)
-    });
-
-    return {
-      isPending,
-      isError,
-      isFetching,
-      Pokemon,
-      error,
-      refetch,
-      pokemonID,
-      getRandomPokemonID
-    };
-  }
+const getRandomPokemonID = () => Math.floor(Math.random() * 150) + 1;
+const pokemonID = ref(getRandomPokemonID());
+const { isPending, isError, isFetching, data, error, refetch } = useQuery({
+  queryKey: ['pokemon', pokemonID.value],
+  queryFn: (): Promise<Pokemon> => pokeApiService.getPokemonById(pokemonID.value)
 });
 </script>
