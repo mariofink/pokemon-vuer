@@ -6,30 +6,17 @@ describe('PokeApiService', () => {
     id: 1,
     name: 'bulbasaur',
     species: {},
-    sprites: {},
+    sprites: {}
   };
 
   beforeEach(() => {
     vi.resetAllMocks();
   });
 
-  test('getRandomPokemon returns a valid Pokemon', async () => {
-    const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => mockPokemon,
-    } as Response);
-
-    const service = new PokeApiService();
-    const pokemon = await service.getRandomPokemon();
-
-    expect(mockFetch).toHaveBeenCalled();
-    expect(pokemon).toEqual(mockPokemon);
-  });
-
   test('getPokemonById returns a valid Pokemon', async () => {
     const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
-      json: async () => mockPokemon,
+      json: async () => mockPokemon
     } as Response);
 
     const service = new PokeApiService();
@@ -41,7 +28,7 @@ describe('PokeApiService', () => {
 
   test('getPokemonById throws an error when fetch fails', async () => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
+      ok: false
     } as Response);
 
     const service = new PokeApiService();

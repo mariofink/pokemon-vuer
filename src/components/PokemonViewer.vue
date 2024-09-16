@@ -11,7 +11,12 @@
     </div>
     <button
       type="button"
-      @click="refetch"
+      @click="
+        () => {
+          pokemonID = getRandomPokemonID();
+          refetch();
+        }
+      "
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
     >
       Get Random Pokémon
@@ -20,9 +25,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { PokeApiService, type Pokemon } from '@/services/PokeApiService';
-import { useQuery } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query';
 import LoaderIndicator from './LoaderIndicator.vue';
 
 const pokeApiService = new PokeApiService();
@@ -31,17 +36,30 @@ export default defineComponent({
   name: 'PokemonViewer',
   components: { LoaderIndicator },
   setup() {
-    const { isPending, isError, isFetching, data: Pokemon, error, refetch } = useQuery({
-      queryKey: ['pokemonRandom'],
-      queryFn: (): Promise<Pokemon> => pokeApiService.getRandomPokemon(),
-    })
+    const getRandomPokemonID = () => Math.floor(Math.random() * 150) + 1;
+    const pokemonID = ref(getRandomPokemonID());
+    const {
+      isPending,
+      isError,
+      isFetching,
+      data: Pokemon,
+      error,
+      refetch
+    } = useQuery({
+      queryKey: ['pokemon', pokemonID.value],
+      queryFn: (): Promise<Pokemon> => pokeApiService.getPokemonById(pokemonID.value)
+    });
 
-    return { isPending, isError, isFetching, Pokemon, error, refetch }
-  },
-  data() {
     return {
-      loading: true,
+      isPending,
+      isError,
+      isFetching,
+      Pokemon,
+      error,
+      refetch,
+      pokemonID,
+      getRandomPokemonID
     };
-  },
+  }
 });
 </script>

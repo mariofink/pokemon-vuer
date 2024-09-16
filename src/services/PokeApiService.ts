@@ -18,11 +18,6 @@ export class PokeApiService {
     return PokeApiSchema.validate(await response.json());
   }
 
-  async getRandomPokemon(): Promise<Pokemon> {
-    const randomPokemonId = Math.floor(Math.random() * 150) + 1;
-    return this.fetchPokemonById(randomPokemonId);
-  }
-
   async getPokemonById(id: number): Promise<Pokemon> {
     return this.fetchPokemonById(id);
   }
