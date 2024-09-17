@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { usePokemonStore } from '@/stores/pokemonStore';
+import LoaderIndicator from './LoaderIndicator.vue';
+
+const store = usePokemonStore();
+const getRandomPokemonID = () => Math.floor(Math.random() * 150) + 1;
+</script>
+
 <template>
   <div class="flex flex-col items-center mt-8">
     <h1 class="text-2xl font-bold">Random Pokémon Viewer</h1>
@@ -22,11 +30,3 @@
     </button>
   </div>
 </template>
-
-<script setup lang="ts">
-import { usePokemonStore } from '@/stores/pokemonStore';
-import LoaderIndicator from './LoaderIndicator.vue';
-
-const store = usePokemonStore();
-const getRandomPokemonID = () => Math.floor(Math.random() * 150) + 1;
-</script>
